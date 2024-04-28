@@ -19,22 +19,21 @@ text_to_morse() {
         char="${input:$i:1}"
         if [[ "${morse_code[$char]+isset}" ]]; then
             foo="${morse_code[$char]}"
-            for (( i=0; i<${#foo}; i++ )); do
-                if [[ "${foo:$i:1}" == "." ]]; then
+            for (( j=0; j<${#foo}; j++ )); do
+                if [[ "${foo:$j:1}" == "." ]]; then
                     ./dotsound.sh
                     sleep 0.1
-                elif [[ "${foo:$i:1}" == "-" ]]; then
+                elif [[ "${foo:$j:1}" == "-" ]]; then
                     ./linesound.sh
                     sleep 0.1
                 else
                     sleep 0.3
                 fi
             done
-            fi
-        morse+="${morse_code[$char]} "
         else
             morse+="$char "
         fi
+        morse+="${morse_code[$char]} "
     done
     echo "$morse"
 }
