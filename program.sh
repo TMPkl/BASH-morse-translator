@@ -31,7 +31,7 @@ text_to_morse() {
                 fi
             done
             fi
-            morse+="${morse_code[$char]} "
+        morse+="${morse_code[$char]} "
         else
             morse+="$char "
         fi
