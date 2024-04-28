@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Słownik zdefiniowanych symboli Morse'a
 declare -A morse_code=(
     ['A']='.-' ['B']='-...' ['C']='-.-.' ['D']='-..' ['E']='.' ['F']='..-.' ['G']='--.' ['H']='....'
     ['I']='..' ['J']='.---' ['K']='-.-' ['L']='.-..' ['M']='--' ['N']='-.' ['O']='---' ['P']='.--.'
@@ -9,7 +8,6 @@ declare -A morse_code=(
     ['5']='.....' ['6']='-....' ['7']='--...' ['8']='---..' ['9']='----.' [' ']='/'
 )
 
-# Funkcja zamieniająca tekst na kod Morse'a
 text_to_morse() {
     local input="$1"
     local morse=""
@@ -40,17 +38,16 @@ text_to_morse() {
 
 # Funkcja wyświetlająca pomoc
 print_help() {
-    echo "Użycie: $0 [-h] [TEKST]"
+    echo "Użycie: $0 [-h] [WIADOMOSC]"
     echo "Konwertuje podany tekst na kod Morse'a."
     echo ""
     echo "Opcje:"
     echo "  -h, --help      Wyświetla pomoc"
     echo ""
     echo "Argumenty:"
-    echo "  TEKST           Tekst do przekonwertowania na kod Morse'a"
+    echo "  WIASOMOSC           Tekst do przekonwertowania na kod Morse'a"
 }
 
-# Sprawdzenie argumentów wejściowych
 if [[ "$#" -eq 0 || "$1" == "-h" || "$1" == "--help" ]]; then
     print_help
 else
