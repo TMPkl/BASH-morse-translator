@@ -78,6 +78,11 @@ if [[ "$#" -eq 0 ]]; then
     print_help
 else
     text="$*"
+    # Adjust the Morse code mapping based on user-defined symbols
+    for key in "${!morse_code[@]}"; do
+        morse_code[$key]=${morse_code[$key]//./$dot_symbol}
+        morse_code[$key]=${morse_code[$key]//-/$line_symbol}
+    done
     morse_text=$(text_to_morse "$text")
     echo "Morse Code: $morse_text"
 fi
