@@ -55,4 +55,16 @@ else
     text="$*"
     morse_text=$(text_to_morse "$text")
     echo "Kod Morse'a: $morse_text"
+    for ((i=0;i<len;i++)); do
+	if [["${morse_text:$i:1}" == "."]]; then
+	   ./dotsound.sh
+	   sleep 0.1
+	elif [["${morse_text:$1:1}" == "-"]]; then
+	   ./linesound.sh
+	   sleep 0.1
+	else
+	  sleep 0.6
+	fi 
+	sleep 0.3
+    done
 fi
