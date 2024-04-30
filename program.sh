@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Default Morse code mapping
 declare -A morse_code=(
     ['A']='.-' ['B']='-...' ['C']='-.-.' ['D']='-..' ['E']='.' ['F']='..-.' ['G']='--.' ['H']='....'
     ['I']='..' ['J']='.---' ['K']='-.-' ['L']='.-..' ['M']='--' ['N']='-.' ['O']='---' ['P']='.--.'
@@ -8,6 +9,11 @@ declare -A morse_code=(
     ['5']='.....' ['6']='-....' ['7']='--...' ['8']='---..' ['9']='----.' [' ']='/'
 )
 
+# Default symbols for dot and line
+dot_symbol="."
+line_symbol="-"
+
+# Function to convert text to Morse code
 text_to_morse() {
     local input="$1"
     local morse=""
@@ -19,15 +25,14 @@ text_to_morse() {
             foo="${morse_code[$char]}"
             for (( j=0; j<${#foo}; j++ )); do
                 if [[ "${foo:$j:1}" == "." ]]; then
-                    ./dotsound.sh
-                    sleep 0.2
+                    echo -n "$dot_symbol" # Output dot symbol
+                    sleep 0.1
                 elif [[ "${foo:$j:1}" == "-" ]]; then
-                    ./linesound.sh
-                    sleep 0.2
+                    echo -n "$line_symbol" # Output line symbol
+                    sleep 0.1
                 else
-                    sleep 0.6
+                    sleep 0.3
                 fi
-	    	sleep 0.4
             done
         else
             morse+="$char "
@@ -37,22 +42,51 @@ text_to_morse() {
     echo "$morse"
 }
 
-# Funkcja wyświetlająca pomoc
+# Function to print help
 print_help() {
-    echo "Użycie: $0 [-h] [WIADOMOSC]"
-    echo "Konwertuje podany tekst na kod Morse'a."
+    echo "Usage: $0 [-h] [-d DOT_SYMBOL] [-l LINE_SYMBOL] [MESSAGE]"
+    echo "Converts the given text to Morse code."
     echo ""
-    echo "Opcje:"
-    echo "  -h, --help      Wyświetla pomoc"
+    echo "Options:"
+    echo "  -h, --help           Display this help message"
+    echo "  -d, --dot SYMBOL     Specify the symbol for dot in Morse code (default: '.')"
+    echo "  -l, --line SYMBOL    Specify the symbol for line in Morse code (default: '-')"
     echo ""
-    echo "Argumenty:"
-    echo "  WIASOMOSC           Tekst do przekonwertowania na kod Morse'a"
+    echo "Arguments:"
+    echo "  MESSAGE              Text to convert to Morse code"
 }
 
-if [[ "$#" -eq 0 || "$1" == "-h" || "$1" == "--help" ]]; then
+# Parse options
+while getopts ":hd:l:" opt; do
+    case ${opt} in
+        h )
+            print_help
+            exit 0
+            ;;
+        d )
+            dot_symbol="$OPTARG"
+            ;;
+        l )
+            line_symbol="$OPTARG"
+            ;;
+        \? )
+            echo "Invalid option: $OPTARG" 1>&2
+            print_help
+            exit 1
+            ;;
+        : )
+            echo "Invalid option: $OPTARG requires an argument" 1>&2
+            print_help
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+
+if [[ "$#" -eq 0 ]]; then
     print_help
 else
     text="$*"
     morse_text=$(text_to_morse "$text")
-    echo "Kod Morse'a: $morse_text"
+    echo "Morse Code: $morse_text"
 fi
