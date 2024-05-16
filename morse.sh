@@ -86,11 +86,14 @@ else
 
     for (( i=0; i<${#morse_text}; i++ )); do
         if [[ "${morse_text:$i:1}" == "$dot_symbol" ]]; then
-            ./dotsound.sh
+            sox -n -r 44100 -b 16 -c 1 tone.wav synth 0.2 sine 1000
         elif [[ "${morse_text:$i:1}" == "$line_symbol" ]]; then
-            ./linesound.sh
+            sox -n -r 44100 -b 16 -c 1 tone.wav synth 0.5 sine 1000
+            echo "Playing line sound"
         else
             sleep 0.3
         fi
+        aplay tone.wav
+        rm tone.wav
     done
 fi
