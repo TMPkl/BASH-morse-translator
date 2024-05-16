@@ -86,11 +86,11 @@ else
 
     for (( i=0; i<${#morse_text}; i++ )); do
         if [[ "${morse_text:$i:1}" == "$dot_symbol" ]]; then
-            sox -n -r 44100 -b 16 -c 1 tone.wav synth 0.2 sine 1000
+            sox -n -r 44100 -b 16 -c 1 tone.wav synth 0.2 sawtooth 1000
             aplay tone.wav > /dev/null 2>&1 #przekierowanie wyjścia do /dev/null aby nie wyświetlało komunikatów
             rm tone.wav
         elif [[ "${morse_text:$i:1}" == "$line_symbol" ]]; then
-            sox -n -r 44100 -b 16 -c 1 tone.wav synth 0.5 sine 1000
+            sox -n -r 44100 -b 16 -c 2 tone.wav synth 0.5 sawtooth 1000
             aplay tone.wav > /dev/null 2>&1 #przekierowanie wyjścia do /dev/null aby nie wyświetlało komunikatów
             rm tone.wav
         else
