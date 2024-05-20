@@ -9,7 +9,7 @@ declare -A morse_code=(
 
 dot_symbol="."
 line_symbol="-"
-
+sep_symbol="/"
 
 print_help() {
     echo "Usage: $0 [-h] [-d DOT_SYMBOL] [-l LINE_SYMBOL] [MESSAGE]"
@@ -39,9 +39,10 @@ text_to_morse(){
                 elif [[ "${characterInMorse:$j:1}" == "-" ]]; then
                     morse+="$line_symbol" 
                 else
-                    morse+=" "
+                    morse+="$sep_symbol"
                 fi
             done
+	morse+=" "
         else 
             morse+="$textcharacter "
         fi
@@ -51,7 +52,7 @@ text_to_morse(){
 }
 
 
-while getopts ":hd:l:" opt; do   #to getopts jest po to aby przełączniki -h -d -l byly rozpoznawane przez skrypt, jest h jest bez : bo nie ma argumentu a jest tylko flaga, d i l mają bo wymagają podania 
+while getopts ":hd:l:s:" opt; do   #to getopts jest po to aby przełączniki -h -d -l byly rozpoznawane przez skrypt, jest h jest bez : bo nie ma argumentu a jest tylko flaga, d i l mają bo wymagają podania 
     case ${opt} in
         h )
             print_help
@@ -63,6 +64,8 @@ while getopts ":hd:l:" opt; do   #to getopts jest po to aby przełączniki -h -d
         l )
             line_symbol="$OPTARG"
             ;;
+	s ) sep_symbol="$OPTARG"
+	    ;;
         \? )
             echo "Invalid option: $OPTARG" 1>&2   #1>&2 to przekierowanie błędów na stderr
             print_help
